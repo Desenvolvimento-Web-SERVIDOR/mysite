@@ -12,7 +12,7 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 
 class NameForm(FlaskForm):
-    name = StringField('What is your name?', validators= [DataRequired()])
+    name = StringField('Qual o seu nome?', validators= [DataRequired()])
     submit = SubmitField('Submit')
 
 @app.route('/')
