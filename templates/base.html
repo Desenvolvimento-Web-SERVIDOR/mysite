@@ -1,0 +1,52 @@
+<!-- 1. Herdando a estrutura básica do Flask-Bootstrap -->
+{% extends "bootstrap/base.html" %}
+
+<!-- 2. Definindo o título da página -->
+{% block title %}Avaliação Contínua{% endblock %}
+
+<!-- 3. Definindo a barra de navegação (navbar) -->
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Avaliação contínua: <b>Aula 040</b:></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+<!-- 4. Adicionando os links de navegação -->
+                <li><a href="/">Home</a></li>
+                <li><a href="/user/Rogerio%20Santos%20Barbosa/PT3032051/IFSP">Identificação</a></li>
+                <li><a href="/contextorequisicao/Rogerio%20Santos%20Barbosa">Contexto da Requisição</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- 5. Definindo o bloco de conteúdo principal -->
+{% block content %}
+<div class="container">
+    <!-- 
+        Este é o bloco que os outros templates (index.html, etc.) irão preencher.
+    -->
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+
+<!-- 6. Incluindo os scripts do Moment.js para as datas dinâmicas -->
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{% endblock %}

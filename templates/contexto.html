@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+  <h1>Olá, {{ name }}!</h1>
+</div>
+<div class="page_content">
+  <h2><b>Seu navegador é:</b> {{user_agent}}</h2>
+  <h2><b>O IP do computador remoto é:</b> {{remote_addr}}</h2>
+  <h2><b>O host da aplicação é:</b> {{remote_host}}</h2>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Dados da última atualização:</h1>
+</div>
+<p>The local date and time is {{moment(current_time).format('LLL') }}.</p>
+<p>That was {{ moment(current_time).fromNow(refresh=True) }}.</p>
+{% endblock %}
+
+<!-- 
+    O Flask-Moment formata a data automaticamente.
+    .format('LLL') -> Formato longo (ex: September 4, 2025 9:30 PM)
+    .fromNow()    -> Formato relativo (ex: a few seconds ago)
+-->
+
