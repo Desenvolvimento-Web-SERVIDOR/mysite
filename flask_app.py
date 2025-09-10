@@ -1,7 +1,5 @@
-from datetime import datetime
-from flask import Flask, render_template, request, make_response, redirect, abort
+from flask import Flask, render_template, session, redirect, url_for
 from flask_bootstrap import Bootstrap
-from flask_moment import Moment
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired 
@@ -15,7 +13,18 @@ class NameForm(FlaskForm):
     name = StringField('Qual o seu nome?', validators= [DataRequired()])
     submit = SubmitField('Submit')
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST']);
+def index():
+    name = None;
+    form = NameForm();
+    if form.validate_on_submit():
+        name = form.name.data;
+        form.name.data = '';
+    return render_template('index.html',
+                           form=form,
+                           name=name);
+
+'''@app.route('/')  ALTERAÇÃO DE ROTA
 def index():
     return render_template('index.html', current_time=datetime.utcnow())
 
@@ -24,9 +33,9 @@ def user(name, prontuario, instituicao):
     return render_template('user.html',
                            name=name,
                            prontuario=prontuario,
-                           instituicao=instituicao);
+                           instituicao=instituicao);'''
 
-@app.route('/contextorequisicao/<name>')
+'''@app.route('/contextorequisicao/<name>')
 def contextorequisicao(name):
     user_agent = request.headers.get('User-Agent');
     remote_addr = request.remote_addr;
@@ -35,7 +44,7 @@ def contextorequisicao(name):
                            name=name,
                            user_agent=user_agent,
                            remote_addr=remote_addr,
-                           remote_host=remote_host);
+                           remote_host=remote_host);'''
 
 @app.errorhandler(404)
 def page_not_found(e):
