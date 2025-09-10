@@ -1,50 +1,38 @@
-from flask import Flask, render_template, session, redirect, url_for
+from flask import Flask, render_template, session, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
+from flask_moment import Moment # Garanta que esta linha existe
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired 
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
+# Adicione a SECRET_KEY, como mostrado no slide de configuração
+app.config['SECRET_KEY'] = 'senha mt foda'
 
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 
 class NameForm(FlaskForm):
-    name = StringField('Qual o seu nome?', validators= [DataRequired()])
+    name = StringField('Qual o seu nome?', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
-@app.route('/', methods=['GET', 'POST']);
+# Substitua sua função index() por esta versão final
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    name = None;
-    form = NameForm();
+    form = NameForm()
     if form.validate_on_submit():
-        name = form.name.data;
-        form.name.data = '';
-    return render_template('index.html',
-                           form=form,
-                           name=name);
-
-'''@app.route('/')  ALTERAÇÃO DE ROTA
-def index():
-    return render_template('index.html', current_time=datetime.utcnow())
-
-@app.route('/user/<name>/<prontuario>/<instituicao>')
-def user(name, prontuario, instituicao):
-    return render_template('user.html',
-                           name=name,
-                           prontuario=prontuario,
-                           instituicao=instituicao);'''
-
-'''@app.route('/contextorequisicao/<name>')
-def contextorequisicao(name):
-    user_agent = request.headers.get('User-Agent');
-    remote_addr = request.remote_addr;
-    remote_host = request.host;
-    return render_template('contexto.html',
-                           name=name,
-                           user_agent=user_agent,
-                           remote_addr=remote_addr,
-                           remote_host=remote_host);'''
+        # Verifica se o nome enviado é diferente do que está na sessão
+        old_name = session.get('name')
+        if old_name is not None and old_name != form.name.data:
+            flash('Parece que você alterou seu nome!')
+        
+        # Armazena o novo nome na sessão
+        session['name'] = form.name.data
+        # Redireciona para evitar reenvio do formulário
+        return redirect(url_for('index'))
+    
+    # Renderiza o template, pegando o nome da sessão
+    return render_template('index.html', form=form, name=session.get('name'))
 
 @app.errorhandler(404)
 def page_not_found(e):
